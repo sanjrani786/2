@@ -18,7 +18,6 @@ read -p "choose ngrok region: " CRP
 clear
 echo "================================"
 echo "Wait Downloading file 3-4 minutes"
-echo "More free vps visit 👉akuh.net👈"
 echo "================================"
 sudo apt-get install lxde -y
 clear
@@ -28,11 +27,12 @@ echo "===================================="
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A6DCF7707EBC211F
 sudo apt-add-repository "deb http://ppa.launchpad.net/ubuntu-mozilla-security/ppa/ubuntu bionic main"
 echo "===================================="
-echo "Update"
 echo "===================================="
 sudo apt-get update > /dev/null 2>&1
 echo "===================================="
 echo "Installing"
+echo "===================================="
+
 echo "===================================="
 sudo apt-get install firefox -y > /dev/null 2>&1
 echo "===================================="
