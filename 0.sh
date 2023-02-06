@@ -1,86 +1,45 @@
-#@title **RDP**
-#@markdown  It takes 4-5 minutes for installation
+echo "Download ngrok"
+wget https://raw.githubusercontent.com/sanjrani786/3/main/ngrok.sh && chmod +x ngrok.sh && ./ngrok.sh
+echo Downloading File From akuh.net
+echo "===================================="
 
-import os
-import subprocess
-
-#@markdown  Visit http://remotedesktop.google.com/headless and copy the command after Authentication
-
-CRP = "DISPLAY= /opt/google/chrome-remote-desktop/start-host --code=\"4/0AWtgzh7qfwqI_EYE_nBAjb22Z3-nWBipGhOULkLBULwnGCwYXduG2EIsURzllrnunFUTOA\" --redirect-url=\"https://remotedesktop.google.com/_/oauthredirect\" --name=$(hostname)" #@param {type:"string"}
-
-#@markdown Enter a Pin (more or equal to 6 digits)
-Pin = 123456 #@param {type: "integer"}
-
-#@markdown Autostart Notebook in RDP
-Autostart = False #@param {type: "boolean"}
-
-
-class CRD:
-    def __init__(self, user):
-        os.system("apt update")
-        self.installCRD()
-        self.installDesktopEnvironment()
-        self.installGoogleChorme()
-        self.finish(user)
-        print("\nRDP created succesfully move to https://remotedesktop.google.com/access")
-
-    @staticmethod
-    def installCRD():
-        print("Installing Chrome Remote Desktop")
-        subprocess.run(['wget', 'https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb'], stdout=subprocess.PIPE)
-        subprocess.run(['dpkg', '--install', 'chrome-remote-desktop_current_amd64.deb'], stdout=subprocess.PIPE)
-        subprocess.run(['apt', 'install', '--assume-yes', '--fix-broken'], stdout=subprocess.PIPE)
-
-    @staticmethod
-    def installDesktopEnvironment():
-        print("Installing Desktop Environment")
-        os.system("export DEBIAN_FRONTEND=noninteractive")
-        os.system("apt install --assume-yes xfce4 desktop-base xfce4-terminal")
-        os.system("bash -c 'echo \"exec /etc/X11/Xsession /usr/bin/xfce4-session\" > /etc/chrome-remote-desktop-session'")
-        os.system("apt remove --assume-yes gnome-terminal")
-        os.system("apt install --assume-yes xscreensaver")
-        os.system("systemctl disable lightdm.service")
-
-    @staticmethod
-    def installGoogleChorme():
-        print("Installing Google Chrome")
-        subprocess.run(["wget", "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"], stdout=subprocess.PIPE)
-        subprocess.run(["dpkg", "--install", "google-chrome-stable_current_amd64.deb"], stdout=subprocess.PIPE)
-        subprocess.run(['apt', 'install', '--assume-yes', '--fix-broken'], stdout=subprocess.PIPE)
-
-    @staticmethod
-    def finish(user):
-        print("Finalizing")
-        if Autostart:
-            os.makedirs(f"/home/{user}/.config/autostart", exist_ok=True)
-            link = "https://colab.research.google.com/github/PradyumnaKrishna/Colab-Hacks/blob/master/Colab%20RDP/Colab%20RDP.ipynb"
-            colab_autostart = """[Desktop Entry]
-Type=Application
-Name=Colab
-Exec=sh -c "sensible-browser {}"
-Icon=
-Comment=Open a predefined notebook at session signin.
-X-GNOME-Autostart-enabled=true""".format(link)
-            with open(f"/home/{user}/.config/autostart/colab.desktop", "w") as f:
-                f.write(colab_autostart)
-            os.system(f"chmod +x /home/{user}/.config/autostart/colab.desktop")
-            os.system(f"chown {user}:{user} /home/{user}/.config")
-
-        os.system(f"adduser {user} chrome-remote-desktop")
-        command = f"{CRP} --pin={Pin}"
-        os.system(f"su - {user} -c '{command}'")
-        os.system("service chrome-remote-desktop start")
-        
-
-        print("Finished Succesfully")
+curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"tcp:..([^"]*).*/\1/p'
+echo "Wait 2 Minutes"
+echo "This is only for education"
+echo "Other interesting tutorials visit akuh.net"
+echo "===================================="
+sudo apt-get update > /dev/null 2>&1
+echo "===================================="
+echo "===================================="
+echo "Install RDP"
+echo "===================================="
+sudo apt install -y xrdp > /dev/null 2>&1
+echo  10%
+sudo apt install xfce4 -y > /dev/null 2>&1
+echo   30%
+sudo apt-get install xfce4 xfce4-terminal -y > /dev/null 2>&1
+echo "===================================="
+echo "Start RDP"
+echo "===================================="
+sudo sed -i.bak '/fi/a xfce4-session \n' /etc/xrdp/startwm.sh > /dev/null 2>&1
+echo 60%
+sudo service xrdp start > /dev/null 2>&1
+echo XRDP Address:
+curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"tcp:..([^"]*).*/\1/p'
+echo "===================================="
 
 
-try:
-    if CRP == "":
-        print("Please enter authcode from the given link")
-    elif len(str(Pin)) < 6:
-        print("Enter a pin more or equal to 6 digits")
-    else:
-        CRD(username)
-except NameError as e:
-    print("'username' variable not found, Create a user first")
+
+echo "Install Firefox"
+echo "===================================="
+
+! wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+! sudo add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
+! sudo apt update 2>&1
+! sudo apt install google-chrome-stable
+
+echo "username 1 Password 1"
+echo "Don't close this tab RDP runs 12 hours"
+echo "Keep support akuh.net thank you"
+echo "===================================="
+sleep 1
